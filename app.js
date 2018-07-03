@@ -8,10 +8,6 @@ const notes = require('./notes.js');
 const argv = yargs.argv;
 
 var command = process.argv[2];
-console.log('Command: ', command);
-console.log('Process: ', process.argv);
-console.log('Yargs: ', argv);
-
 
 if (command === 'add') {
     var note = notes.addNote(argv.title, argv.body);
@@ -19,11 +15,12 @@ if (command === 'add') {
         notes.logNote();
     }
 } else if (command === 'list') {
-    notes.getAll();
+    var allNotes = notes.getAll();
+    console.log(`Printing ${allNotes.length} note(s).`);
+    allNotes.forEach((note) => notes.logNote(note));
 } else if (command === 'read') {
     var note = notes.getNote(argv.title);
-    var message = note ? `Note found` : 'Note not found';
-    console.log(message);
+    notes.logNote(note);
 } else if (command === 'remove') {
     var noteRemoved = notes.removeNote(argv.title);
     var message = noteRemoved ? 'Note was removed' : 'Note not found';
